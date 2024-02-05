@@ -1,10 +1,12 @@
 import { Container } from '@/app/components/container/Container'
-import { product } from '@/utils/product'
+
 import React from 'react'
 import { ProductDetails } from '../ProductDetails'
+import { products } from '@/utils'
 
 interface Iparams{
     productId?:string
+    name? :string
 }
 
 export default function Product({params}:{params:Iparams}) {
@@ -13,7 +15,7 @@ export default function Product({params}:{params:Iparams}) {
   return (
     <div className='p-8'>
         <Container>
-            <ProductDetails product={product} />
+            <ProductDetails product={products} />
         </Container>
     </div>
   )
