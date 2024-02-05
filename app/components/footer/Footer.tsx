@@ -1,9 +1,10 @@
 import React from 'react'
-import { Container } from '../container/Container'
+
 import { FooterList } from './FooterList'
 import Link from 'next/link'
 import {MdFacebook} from 'react-icons/md'
 import { AiFillInstagram } from 'react-icons/ai'
+import { Container } from '../container'
 
 export  function Footer() {
   return (

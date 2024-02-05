@@ -1,7 +1,8 @@
 import React from "react";
-import { Container } from "../container/Container";
+
 import Link from "next/link";
 import {Redressed} from 'next/font/google';
+import { Container } from "../container";
 
 const redressed = Redressed({subsets:['latin'],weight:['400'] })
 
