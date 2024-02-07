@@ -14,6 +14,7 @@ interface ProductCardProp{
 export  function ProductCard({data}:ProductCardProp) {
   const router = useRouter();
   const productRating = data.reviews.reduce((acc:number , item:any)=> item.rating + acc , 0) / data.reviews.length
+  
   return (
     <div 
      onClick={()=> router.push(`/product/${data.id}`)}
