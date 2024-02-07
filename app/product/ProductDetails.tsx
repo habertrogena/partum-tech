@@ -1,6 +1,7 @@
 "use client";
 import { Rating } from "@mui/material";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
+import { SetColor, SetQuantity } from "../components";
 
 interface ProductDetailsProp {
   product: any;
@@ -35,10 +36,29 @@ export function ProductDetails({ product }: ProductDetailsProp) {
     brand: product.brand,
     selectedImage:{...product.images[0]},
     price:product.price});
-
+console.log(cartProduct);
   const productRating =
     product.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
     product.reviews.length;
+
+  const handleColorSelect = useCallback((value:SelectedImageType)=>{
+    setCartProduct(prev=> ({ ...prev ,selectedImage: value}));
+
+  },[cartProduct.selectedImage]);
+
+  const handleQtyIncrease = useCallback(()=>{
+    
+    setCartProduct((prev)=>{
+      return {...prev,quantity: ++prev.quantity };
+    })
+  },[cartProduct]);
+  const handleQtyDecrease = useCallback(()=>{
+    if (cartProduct.quantity === 1) return;
+    setCartProduct((prev)=>{
+return {...prev ,quantity:--prev.quantity}
+    })
+  },[cartProduct])
+
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -66,9 +86,10 @@ export function ProductDetails({ product }: ProductDetailsProp) {
           {product.inStock ? "in stock" : "out of stock"}
         </div>
         <Horizontal />
-        <div> color</div>
+       <SetColor handleColorSelect={handleColorSelect} images={product.images} cartProduct={cartProduct}
+       />
         <Horizontal />
-        <div>quality</div>
+        <SetQuantity cartProduct={cartProduct} handleQtyDecrease={handleQtyDecrease} handleQtyIncrease={handleQtyIncrease}/>
         <Horizontal />
         <div>add to cart</div>
       </div>
