@@ -7,58 +7,60 @@ interface ProductDetailsProp {
   product: any;
 }
 
-export type CartProductType ={
-  id: string,
-  quantity: 1,
-  name: string,
-  description: string,
-  brand: string,
-  selectedImage:SelectedImageType,
-  price:number
+export type CartProductType = {
+  id: string;
+  quantity: 1;
+  name: string;
+  description: string;
+  brand: string;
+  selectedImage: SelectedImageType;
+  price: number;
+};
 
-}
-
-export type SelectedImageType ={
-  color: string,
-  colorCode:string,
-  image: string
-}
+export type SelectedImageType = {
+  color: string;
+  colorCode: string;
+  image: string;
+};
 
 const Horizontal = () => {
   return <hr className="w-[30%] my-2" />;
 };
 
 export function ProductDetails({ product }: ProductDetailsProp) {
-  const [cartProduct,setCartProduct]= useState<CartProductType>({ id:product.id,
-    quantity:1,
+  const [cartProduct, setCartProduct] = useState<CartProductType>({
+    id: product.id,
+    quantity: 1,
     name: product.name,
-    description:product.description,
+    description: product.description,
     brand: product.brand,
-    selectedImage:{...product.images[0]},
-    price:product.price});
-console.log(cartProduct);
+    selectedImage: { ...product.images[0] },
+    price: product.price,
+  });
+
   const productRating =
     product.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
     product.reviews.length;
 
-  const handleColorSelect = useCallback((value:SelectedImageType)=>{
-    setCartProduct(prev=> ({ ...prev ,selectedImage: value}));
+  const handleColorSelect = useCallback(
+    (value: SelectedImageType) => {
+      setCartProduct((prev) => ({ ...prev, selectedImage: value }));
+    },
+    [cartProduct.selectedImage]
+  );
 
-  },[cartProduct.selectedImage]);
+  const handleQtyIncrease = useCallback(() => {
+    setCartProduct((prev) => {
+      return { ...prev, quantity: ++prev.quantity };
+    });
+  }, [cartProduct]);
 
-  const handleQtyIncrease = useCallback(()=>{
-    
-    setCartProduct((prev)=>{
-      return {...prev,quantity: ++prev.quantity };
-    })
-  },[cartProduct]);
-  const handleQtyDecrease = useCallback(()=>{
+  const handleQtyDecrease = useCallback(() => {
     if (cartProduct.quantity === 1) return;
-    setCartProduct((prev)=>{
-return {...prev ,quantity:--prev.quantity}
-    })
-  },[cartProduct])
-
+    setCartProduct((prev) => {
+      return { ...prev, quantity: --prev.quantity };
+    });
+  }, [cartProduct]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -86,10 +88,17 @@ return {...prev ,quantity:--prev.quantity}
           {product.inStock ? "in stock" : "out of stock"}
         </div>
         <Horizontal />
-       <SetColor handleColorSelect={handleColorSelect} images={product.images} cartProduct={cartProduct}
-       />
+        <SetColor
+          handleColorSelect={handleColorSelect}
+          images={product.images}
+          cartProduct={cartProduct}
+        />
         <Horizontal />
-        <SetQuantity cartProduct={cartProduct} handleQtyDecrease={handleQtyDecrease} handleQtyIncrease={handleQtyIncrease}/>
+        <SetQuantity
+          cartProduct={cartProduct}
+          handleQtyDecrease={handleQtyDecrease}
+          handleQtyIncrease={handleQtyIncrease}
+        />
         <Horizontal />
         <div>add to cart</div>
       </div>
