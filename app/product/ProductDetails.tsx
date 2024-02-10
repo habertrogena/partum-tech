@@ -1,7 +1,7 @@
 "use client";
 import { Rating } from "@mui/material";
 import React, { useCallback, useState } from "react";
-import { SetColor, SetQuantity } from "../components";
+import { Button, ProductImage, SetColor, SetQuantity } from "../components";
 
 interface ProductDetailsProp {
   product: any;
@@ -64,7 +64,7 @@ export function ProductDetails({ product }: ProductDetailsProp) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-      <div>images</div>
+      <ProductImage cartProduct={cartProduct} product={product} handleColorSelect={handleColorSelect}/>
 
       <div className="flex flex-col gap-1 text-slate-500 text-sm">
         <h2 className="text-3xl font-medium text-slate-700">{product.name}</h2>
@@ -100,7 +100,8 @@ export function ProductDetails({ product }: ProductDetailsProp) {
           handleQtyIncrease={handleQtyIncrease}
         />
         <Horizontal />
-        <div>add to cart</div>
+        <div className="max-w-[300px]"><Button label="Add to Cart" onClick={()=>{}}
+        /></div>
       </div>
     </div>
   );
