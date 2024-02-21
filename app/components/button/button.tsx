@@ -9,6 +9,7 @@ interface ButtonProps {
   icon?: IconType;
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
+
 export function Button({
   label,
   custom,
@@ -16,9 +17,11 @@ export function Button({
   icon: Icon,
   outlined,
   small,
+  onClick
 }: ButtonProps) {
   return (
     <button
+    onClick={onClick}
       disabled={disabled}
       className={`disabled:opacity-70 disabled:cursor-not-allowed rounded-md hover:opacity-80 transition w-full border-slate-700 flex items-center justify-center gap-2 ${
         outlined ? "bg-white" : "bg-slate-700"

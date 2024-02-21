@@ -2,6 +2,7 @@
 import { Rating } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { Button, ProductImage, SetColor, SetQuantity } from "../components";
+import { UseCart } from "../hooks";
 
 interface ProductDetailsProp {
   product: any;
@@ -28,6 +29,7 @@ const Horizontal = () => {
 };
 
 export function ProductDetails({ product }: ProductDetailsProp) {
+  const {cartProducts,handleAddProductToCart,cartTotalQty} = UseCart()
   const [cartProduct, setCartProduct] = useState<CartProductType>({
     id: product.id,
     quantity: 1,
@@ -37,6 +39,8 @@ export function ProductDetails({ product }: ProductDetailsProp) {
     selectedImage: { ...product.images[0] },
     price: product.price,
   });
+
+  console.log(cartProducts); 
 
   const productRating =
     product.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
@@ -61,6 +65,8 @@ export function ProductDetails({ product }: ProductDetailsProp) {
       return { ...prev, quantity: --prev.quantity };
     });
   }, [cartProduct]);
+
+ 
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -100,7 +106,7 @@ export function ProductDetails({ product }: ProductDetailsProp) {
           handleQtyIncrease={handleQtyIncrease}
         />
         <Horizontal />
-        <div className="max-w-[300px]"><Button label="Add to Cart" onClick={()=>{}}
+        <div className="max-w-[300px]"><Button label="Add to Cart" onClick={()=>{handleAddProductToCart(cartProduct)}}
         /></div>
       </div>
     </div>
