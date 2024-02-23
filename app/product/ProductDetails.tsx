@@ -1,8 +1,11 @@
 "use client";
 import { Rating } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, ProductImage, SetColor, SetQuantity } from "../components";
 import { UseCart } from "../hooks";
+import { MdCheckCircle } from "react-icons/md";
+import { useRouter } from "next/navigation";
+
 
 interface ProductDetailsProp {
   product: any;
@@ -29,7 +32,8 @@ const Horizontal = () => {
 };
 
 export function ProductDetails({ product }: ProductDetailsProp) {
-  const {cartProducts,handleAddProductToCart,cartTotalQty} = UseCart()
+  const { cartProducts, handleAddProductToCart, cartTotalQty } = UseCart();
+  const [isProductInCart, setIsProductInCart] = useState(false);
   const [cartProduct, setCartProduct] = useState<CartProductType>({
     id: product.id,
     quantity: 1,
@@ -40,7 +44,21 @@ export function ProductDetails({ product }: ProductDetailsProp) {
     price: product.price,
   });
 
-  console.log(cartProducts); 
+  const router = useRouter();
+
+  console.log(cartProducts);
+  // logic to check if we have item in cart
+  useEffect(() => {
+    setIsProductInCart(false);
+    if (cartProducts) {
+      const existingIndex = cartProducts.findIndex(
+        (item) => item.id === product.id
+      );
+      if (existingIndex > -1) {
+        setIsProductInCart(true);
+      }
+    }
+  }, [cartProducts]);
 
   const productRating =
     product.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
@@ -66,11 +84,13 @@ export function ProductDetails({ product }: ProductDetailsProp) {
     });
   }, [cartProduct]);
 
- 
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-      <ProductImage cartProduct={cartProduct} product={product} handleColorSelect={handleColorSelect}/>
+      <ProductImage
+        cartProduct={cartProduct}
+        product={product}
+        handleColorSelect={handleColorSelect}
+      />
 
       <div className="flex flex-col gap-1 text-slate-500 text-sm">
         <h2 className="text-3xl font-medium text-slate-700">{product.name}</h2>
@@ -94,20 +114,46 @@ export function ProductDetails({ product }: ProductDetailsProp) {
           {product.inStock ? "in stock" : "out of stock"}
         </div>
         <Horizontal />
-        <SetColor
-          handleColorSelect={handleColorSelect}
-          images={product.images}
-          cartProduct={cartProduct}
-        />
-        <Horizontal />
-        <SetQuantity
-          cartProduct={cartProduct}
-          handleQtyDecrease={handleQtyDecrease}
-          handleQtyIncrease={handleQtyIncrease}
-        />
-        <Horizontal />
-        <div className="max-w-[300px]"><Button label="Add to Cart" onClick={()=>{handleAddProductToCart(cartProduct)}}
-        /></div>
+        {isProductInCart ? (
+          <>
+            <p className="mb-2 text-slate-500 flex items-center gap-1">
+              <MdCheckCircle size={20} className="text-teal-400" />
+              <span>product added to cart</span>
+            </p>
+            <div className="max-w-[300px]">
+              <Button
+                label="View Cart"
+                outlined
+                onClick={() => {
+                  router.push("/cart");
+                }}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <SetColor
+              handleColorSelect={handleColorSelect}
+              images={product.images}
+              cartProduct={cartProduct}
+            />
+            <Horizontal />
+            <SetQuantity
+              cartProduct={cartProduct}
+              handleQtyDecrease={handleQtyDecrease}
+              handleQtyIncrease={handleQtyIncrease}
+            />
+            <Horizontal />
+            <div className="max-w-[300px]">
+              <Button
+                label="Add to Cart"
+                onClick={() => {
+                  handleAddProductToCart(cartProduct);
+                }}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

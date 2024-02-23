@@ -2,8 +2,9 @@ import { Container } from '@/app/components/container/Container'
 
 import React from 'react'
 import { ProductDetails } from '../ProductDetails'
-import { product, products } from '@/utils'
+
 import { ListRating } from './listRating'
+import { products } from '@/utils'
 
 interface Iparams{
     productId?:string
@@ -12,6 +13,7 @@ interface Iparams{
 
 export default function Product({params}:{params:Iparams}) {
     console.log('params',params)
+    const product = products.find((item)=>item.id===params.productId)
     
   return (
     <div className='p-8'>

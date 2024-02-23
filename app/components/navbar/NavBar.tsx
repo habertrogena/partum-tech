@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import {Redressed} from 'next/font/google';
 import { Container } from "../container";
+import { CartCount } from ".";
 
 const redressed = Redressed({subsets:['latin'],weight:['400'] })
 
@@ -33,7 +34,7 @@ export function NavBar() {
           <Link href='/' className={`${redressed.className} font-bold text-2xl `} > Partum Tech</Link>
           <div>search</div>
           <div className="flex items-center gap-8 md:gap-12">
-            <div>CartCount</div>
+            <CartCount/>
             <div>UserMenu</div>
           </div>
         </div>
