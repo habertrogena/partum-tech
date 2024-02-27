@@ -6,3 +6,5 @@ export * from './products';
 export * from './button';
 export * from './heading';
 export * from './avatar';
+export * from './form';
+export * from './inputs'
